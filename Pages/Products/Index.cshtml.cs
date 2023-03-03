@@ -10,6 +10,8 @@ public class IndexModel : PageModel
 {
     [BindProperty]
     public Product? Product { get; set; }
+    [BindProperty]
+    public Product? EditProduct { get; set; }
     private readonly DatabaseContext _dbContext;
     public IList<Product> Products { get; set; } = default!;
 
@@ -41,9 +43,40 @@ public class IndexModel : PageModel
 
     public IActionResult OnPostDelete(int id)
     {
+        if (null == id)
+        {
+
+            // sends 404 error 
+            return NotFound();
+
+        }
+
         _dbContext.Remove(_dbContext.Products.Find(id));
 
         _dbContext.SaveChangesAsync();
+
+        return RedirectToPage("../products/index");
+    }
+
+    public async Task<IActionResult> OnPostEdit(int id)
+    {
+
+        if (null == id)
+        {
+            return NotFound();
+
+        }
+
+        Product p = await _dbContext.Products.FindAsync(id);
+
+        if (p != null)
+        {
+            EditProduct = p;
+
+        }
+
+        // _dbContext.Products.Update(EditProduct);
+        // await _dbContext.SaveChangesAsync();
 
         return RedirectToPage("../products/index");
     }

@@ -21,7 +21,8 @@
             </div>
             <div style="display: flex;">
                 <button style="width:100%" type="submit" class="btn btn-dark" asp-page-handler="delete" asp-route-id="@product.ID" form="delete-form">Remove</button>
-                <button style="width:100%" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal">Update</button>
+                <a style="width:100%" class="btn btn-primary" role="button" data-bs-toggle="modal" data-bs-target="#updateModal" asp-route-id="@product.ID" asp-page-handler="edit">Update</a>
+                @* <button style="width:100%" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal">Update</button> *@
             </div>
         </div>
     }
@@ -60,6 +61,9 @@
                 <input asp-for="Product.Price" class="form-control" type="number" min="0" max="10000" step="0.25" value="0.00" id="inputProductPrice" />
                 <span asp-validation-for="Product.Price" class="text-danger"></span>
             </div>
+
+
+            <input asp-for="Product.ID" type="hidden" />
         </form>
 
 
@@ -80,12 +84,32 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="updateModalLabel">Create Product</h1>
+        <h1 class="modal-title fs-5" id="updateModalLabel">Edit Product</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form method="post" id="update-form">
-            
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <!--- Product Name Input --->
+            <div class="form-group">
+                <label asp-for="EditProduct.ProductName" class="control-label">Product Name</label>
+                <input asp-for="EditProduct.ProductName" class="form-control" />
+                <span asp-validation-for="EditProduct.ProductName" class="text-danger"></span>
+            </div>
+
+            <!--- Product Type Select --->
+            <div class="form-group">
+                <label asp-for="EditProduct.ProductType" class="control-label">Product Type</label>
+                <select asp-for="EditProduct.ProductType" class="form-select" asp-items="@Html.GetEnumSelectList<ProductType>()"></select>
+                <span asp-validation-for="EditProduct.ProductType" class="text-danger"></span>
+            </div>
+
+            <!--- Product Name Input --->
+            <div class="form-group">
+                <label asp-for="EditProduct.Price" class="control-label">Product Price</label>
+                <input asp-for="EditProduct.Price" class="form-control" type="number" min="0" max="10000" step="0.25" value="0.00" id="inputProductPrice" />
+                <span asp-validation-for="EditProduct.Price" class="text-danger"></span>
+            </div>
         </form>
 
 
